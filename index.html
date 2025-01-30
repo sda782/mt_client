@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mousetrap</title>
+</head>
+
+<body>
+    <h1>Mousetrap</h1>
+    <p>This is a test page for the mousetrap library.</p>
+    <p id="log">standby</p>
+    <script>
+        function handleMotion(event) {
+            const acceleration = event.accelerationIncludingGravity;
+            console.log("X:", acceleration.x, "Y:", acceleration.y, "Z:", acceleration.z);
+            document.getElementById("log").innerHTML = "X: " + acceleration.x + "<br>Y: " + acceleration.y + "<br>Z: " + acceleration.z;
+        }
+
+        if (typeof DeviceMotionEvent.requestPermission === "function") {
+            // For iOS: Ask for permission
+            DeviceMotionEvent.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    window.addEventListener("devicemotion", handleMotion);
+                }
+            }).catch(console.error);
+        } else {
+            // For Android/Other browsers
+            window.addEventListener("devicemotion", handleMotion);
+        }
+    </script>
+</body>
+
+</html>
