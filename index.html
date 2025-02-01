@@ -11,17 +11,24 @@
     <h1>Mousetrap</h1>
     <p>This is a test page for the mousetrap library.</p>
     <p id="log">standby</p>
+    <button id="requestPerm" onclick="requestPermission()">Start Detecting</button>
     <script>
+
+        const log = document.getElementById("log")
+
         function handleMotion(event) {
             const acceleration = event.accelerationIncludingGravity;
             console.log("X:", acceleration.x, "Y:", acceleration.y, "Z:", acceleration.z);
-            document.getElementById("log").innerHTML = "X: " + acceleration.x + "<br>Y: " + acceleration.y + "<br>Z: " + acceleration.z;
+            log.innerHTML = "X: " + acceleration.x + "<br>Y: " + acceleration.y + "<br>Z: " + acceleration.z;
         }
 
-        if (typeof DeviceMotionEvent.requestPermission === "function") {
-            // For iOS: Ask for permission
+        function requestPermission(){
+            log.innerHTML = "requesting"
+            if (typeof DeviceMotionEvent.requestPermission === "function") {
+            log.innerHTML = "has function"
             DeviceMotionEvent.requestPermission().then(permission => {
                 if (permission === "granted") {
+                    log.innerHTML = "permission granted"
                     window.addEventListener("devicemotion", handleMotion);
                 }
             }).catch(console.error);
@@ -29,6 +36,8 @@
             // For Android/Other browsers
             window.addEventListener("devicemotion", handleMotion);
         }
+        }
+
     </script>
 </body>
 
